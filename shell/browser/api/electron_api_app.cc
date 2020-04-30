@@ -883,6 +883,12 @@ base::FilePath App::GetPath(gin_helper::ErrorThrower thrower,
       SetAppLogsPath(thrower, base::Optional<base::FilePath>());
       succeed = base::PathService::Get(key, &path);
     }
+
+#if defined(OS_WIN)
+    if (!succeeded && name == "recent") {
+      succeeded = platform_util::GetFolderPath(DIR_RECENT, &path);
+    }
+#endif
   }
 
   if (!succeed)
